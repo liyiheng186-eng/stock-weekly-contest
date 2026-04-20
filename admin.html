@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A股周赛管理</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html#ranking" aria-label="返回A股周赛排名">
+        <span class="brand-mark">管</span>
+        <span>
+          <strong>红榜管理</strong>
+          <small>提交与结算</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="管理导航">
+        <a href="./index.html#ranking">展示页</a>
+        <a href="#sync">行情同步</a>
+        <a href="#submit">提交参赛</a>
+        <a href="#settle">管理员结算</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="admin-hero">
+        <p class="eyebrow">Admin</p>
+        <h1>后台维护，前台只看红榜。</h1>
+        <p>这里用于维护参赛名单、录入结算价格、保存每周回溯。展示页保持干净，只给大家看排名、回溯和规则。</p>
+      </section>
+
+      <section class="section sync-section" id="sync">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Quotes</p>
+            <h2>行情同步</h2>
+          </div>
+          <button class="button primary" id="reloadFileData" type="button">用数据文件刷新页面</button>
+        </div>
+        <div class="sync-guide">
+          <article>
+            <h3>1. 双击运行同步脚本</h3>
+            <p>打开项目文件夹，双击 <strong>sync_quotes.bat</strong>，输入本周起始交易日和结束日期。</p>
+          </article>
+          <article>
+            <h3>2. 刷新页面数据</h3>
+            <p>脚本会把行情写入 <strong>data.js</strong>。回到这里点击“用数据文件刷新页面”。</p>
+          </article>
+          <article>
+            <h3>3. 保存回溯</h3>
+            <p>确认排名无误后，点击“保存本周回溯”，展示页会显示本周归档。</p>
+          </article>
+        </div>
+        <p class="sync-status" id="dataUpdatedAt">数据文件尚未同步</p>
+      </section>
+
+      <section class="section split" id="submit">
+        <div class="panel intro-panel">
+          <p class="eyebrow">Entry</p>
+          <h2>提交参赛</h2>
+          <p>每位选手提交 1 只 A 股。提交时间会用于同收益率时的排序。</p>
+          <ul class="check-list">
+            <li>支持 6 位 A 股代码</li>
+            <li>自动记录当前提交时间</li>
+            <li>结算前可由管理员修改价格与状态</li>
+          </ul>
+        </div>
+
+        <form class="panel form-panel" id="entryForm">
+          <label>
+            <span>选手名称</span>
+            <input name="playerName" required maxlength="20" placeholder="例如：王小明" />
+          </label>
+          <label>
+            <span>股票代码</span>
+            <input name="stockCode" required inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="例如：600519" />
+          </label>
+          <label>
+            <span>股票名称</span>
+            <input name="stockName" required maxlength="20" placeholder="例如：贵州茅台" />
+          </label>
+          <button class="button primary full" type="submit">提交本周参赛</button>
+          <p class="form-note" id="submitMessage" role="status"></p>
+        </form>
+      </section>
+
+      <section class="section" id="settle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Settlement</p>
+            <h2>管理员结算</h2>
+          </div>
+          <div class="admin-actions">
+            <label class="week-label">
+              <span>当前周赛名称</span>
+              <input id="weekLabelInput" maxlength="20" value="第一周" />
+            </label>
+            <button class="button subtle" id="resetDemo" type="button">恢复第一周名单</button>
+            <button class="button subtle" id="archiveWeek" type="button">保存本周回溯</button>
+            <button class="button subtle" id="newWeek" type="button">开启下一周</button>
+            <button class="button primary" id="settleAll" type="button">重新计算排名</button>
+          </div>
+        </div>
+
+        <div class="settle-list" id="settleList"></div>
+      </section>
+    </main>
+
+    <template id="settleTemplate">
+      <article class="settle-item">
+        <div class="settle-title">
+          <strong data-field="title"></strong>
+          <span data-field="submitted"></span>
+        </div>
+        <div class="settle-grid">
+          <label>
+            <span>周一开盘价</span>
+            <input data-input="mondayOpen" type="number" min="0" step="0.01" />
+          </label>
+          <label>
+            <span>周五/最终收盘价</span>
+            <input data-input="fridayClose" type="number" min="0" step="0.01" />
+          </label>
+          <label class="checkbox-line">
+            <input data-input="mondayLimitUp" type="checkbox" />
+            <span>周一开盘涨停，收益按 0%</span>
+          </label>
+          <label class="checkbox-line">
+            <input data-input="invalid" type="checkbox" />
+            <span>取消参赛资格</span>
+          </label>
+          <label class="wide">
+            <span>取消原因 / 备注</span>
+            <input data-input="note" maxlength="40" placeholder="例如：ST、停牌、新股未满 5 个交易日" />
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

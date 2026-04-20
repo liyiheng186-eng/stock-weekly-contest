@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A股周赛排名</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#ranking" aria-label="A股周赛排名首页">
+        <span class="brand-mark">周</span>
+        <span>
+          <strong>A股周赛排名</strong>
+          <small>红榜周赛</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#ranking">本周排名</a>
+        <a href="#history">每周回溯</a>
+        <a href="#rules">规则</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <img
+          class="hero-image"
+          src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=1800&q=80"
+          alt="股票行情屏幕"
+        />
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Weekly Stock Arena</p>
+          <h1>红榜见真章。</h1>
+          <p class="hero-copy">每周一开盘到周五收盘，一只 A 股标的决出本周名次。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#ranking">查看本周排名</a>
+            <a class="button ghost" href="#history">查看每周回溯</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-band" aria-label="本周概况">
+        <div class="stat">
+          <span id="statEntries">0</span>
+          <small>参赛标的</small>
+        </div>
+        <div class="stat">
+          <span id="statValid">0</span>
+          <small>有效排名</small>
+        </div>
+        <div class="stat">
+          <span id="statLeader">--</span>
+          <small>当前第一</small>
+        </div>
+        <div class="stat">
+          <span id="statBest">--</span>
+          <small>最高收益</small>
+        </div>
+      </section>
+
+      <section class="section" id="ranking">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Leaderboard</p>
+            <h2><span id="currentWeekTitle">本周</span>排名</h2>
+          </div>
+          <p class="section-note">收益率相同，提交时间更早者排名靠前。</p>
+        </div>
+
+        <div class="champion-board" id="podiumBoard" aria-label="本周前三名"></div>
+
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>选手</th>
+                <th>股票</th>
+                <th>提交时间</th>
+                <th>周一开盘</th>
+                <th>结算价</th>
+                <th>收益率</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+          <div class="empty" id="emptyRanking" hidden>还没有有效参赛记录。</div>
+        </div>
+      </section>
+
+      <section class="section" id="history">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Archive</p>
+            <h2>每周回溯</h2>
+          </div>
+        </div>
+        <div class="history-list" id="historyList"></div>
+        <div class="empty history-empty" id="emptyHistory" hidden>还没有保存过周赛回溯。</div>
+      </section>
+
+      <section class="section split" id="rules">
+        <div>
+          <p class="eyebrow">Rules</p>
+          <h2>股票周赛规则</h2>
+          <p class="rule-copy">系统按自然周统计有效交易日数据，收益率只看周一开盘价与周五收盘价，不计手续费、印花税和盘中波动。</p>
+        </div>
+        <div class="rules-grid">
+          <article>
+            <h3>收益公式</h3>
+            <p>当周收益率 = （周五收盘价 - 周一开盘价）÷ 周一开盘价 × 100%</p>
+          </article>
+          <article>
+            <h3>无效标的</h3>
+            <p>停牌、ST/*ST、新股上市未满 5 个交易日等非正常交易状态不参与排名。</p>
+          </article>
+          <article>
+            <h3>特殊处理</h3>
+            <p>周一开盘直接涨停时，当周收益率按 0% 计算；周五前停牌时，用停牌前最后一个交易日收盘价结算。</p>
+          </article>
+          <article>
+            <h3>排名顺序</h3>
+            <p>收益率从高到低排序；收益率相同，提交时间更早者靠前。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
